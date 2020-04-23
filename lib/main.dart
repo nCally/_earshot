@@ -48,11 +48,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       Column(
                         children: <Widget>[
-                          Opacity(
-                            opacity: _current == true ? 1.0 : 0.3,
-                            child: Container(
-                              child: Text('Recent',
-                                  style: Theme.of(context).textTheme.body1),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _current = true;
+                              });
+                            },
+                            child: Opacity(
+                              opacity: _current == true ? 1.0 : 0.3,
+                              child: Container(
+                                child: Text('Recent',
+                                    style: Theme.of(context).textTheme.body1),
+                              ),
                             ),
                           )
                         ],
@@ -61,11 +68,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: <Widget>[
                           Padding(
                               padding: EdgeInsets.only(left: 20.0),
-                              child: Opacity(
-                                opacity: _current == true ? 0.3 : 1.0,
-                                child: Container(
-                                  child: Text('Library',
-                                      style: Theme.of(context).textTheme.body1),
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _current = false;
+                                  });
+                                },
+                                child: Opacity(
+                                  opacity: _current == true ? 0.3 : 1.0,
+                                  child: Container(
+                                    child: Text('Library',
+                                        style:
+                                            Theme.of(context).textTheme.body1),
+                                  ),
                                 ),
                               ))
                         ],
@@ -95,13 +110,40 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _currentChild() {
     if (_current == true) {
-      return Container(
+      return Expanded(
+          flex: 1,
+          child: ListView(
+            children: <Widget>[
+              Wrap(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        "First",
+                        style: Theme.of(context).textTheme.body2,
+                      )
+                    ],
+                  )
+                ],
+              )
+            ],
+          ));
+    } else {
+      return Expanded(
+        flex: 1,
         child: ListView(
-          children: <Widget>[Text('True screen')],
+          children: <Widget>[
+            Wrap(
+              children: <Widget>[
+                Text(
+                  "Seconds",
+                  style: Theme.of(context).textTheme.body2,
+                )
+              ],
+            )
+          ],
         ),
       );
-    } else {
-      return Text('Second, false screen');
     }
   }
 }
