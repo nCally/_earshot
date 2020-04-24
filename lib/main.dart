@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:Earshot/services/db.dart';
 
-void main() => runApp(EarshotApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DB.init();
+  return runApp(EarshotApp());
+}
 
 class EarshotApp extends StatelessWidget {
   @override
@@ -96,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          DB.getBooks();
           setState(() {
             _current = !_current;
           });
