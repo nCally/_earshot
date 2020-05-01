@@ -1,9 +1,13 @@
+import 'package:Earshot/db/book-model.dart';
+import 'package:Earshot/db/db.dart';
+import 'package:Earshot/new-book-form.dart';
 import 'package:flutter/material.dart';
-import 'package:Earshot/services/db.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DB.init();
+
+  await DatabaseCreator().initDb();
+
   return runApp(EarshotApp());
 }
 
@@ -11,11 +15,13 @@ class EarshotApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'EarShot',
       theme: ThemeData(
           fontFamily: 'Poppins',
           primaryColor: const Color(0XFF2B3B46),
           accentColor: const Color(0XFFCE9073),
+          canvasColor: Colors.transparent,
           textTheme: TextTheme(
               body1: TextStyle(fontSize: 36, color: const Color(0XFFCDBFBC)),
               body2: TextStyle(fontSize: 18, color: const Color(0XFFCDBFBC)))),
@@ -31,11 +37,37 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _current = true;
+  Future<List<Books>> booksList;
 
   void setCurrent() {
     setState(() {
       _current = !_current;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    booksList = DBFunctions.getAllBooks();
+  }
+
+  void _openNewBookModal() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (builder) {
+          return Container(
+            color: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(10.0),
+                      topRight: const Radius.circular(10.0))),
+              child: NewBookForm(),
+            ),
+          );
+        });
   }
 
   @override
@@ -54,7 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         children: <Widget>[
                           GestureDetector(
-                            onTap: () {
+                            onTap: () async {
+                              /* Books newBook = Books(
+                                  id: 1,
+                                  title:
+                                      'Essentialism: Disciplined pursuit of less',
+                                  author: 'Greg Mckeown',
+                                  year: '2004');
+                              await DBFunctions.addBook(newBook); */
+
                               setState(() {
                                 _current = true;
                               });
@@ -100,12 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          DB.getBooks();
-          setState(() {
-            _current = !_current;
-          });
-        },
+        onPressed: _openNewBookModal,
         child: Icon(
           Icons.add,
           color: Colors.white,
@@ -116,40 +151,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _currentChild() {
     if (_current == true) {
-      return Expanded(
-          flex: 1,
-          child: ListView(
-            children: <Widget>[
-              Wrap(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Text(
-                        "First",
-                        style: Theme.of(context).textTheme.body2,
-                      )
-                    ],
-                  )
-                ],
-              )
-            ],
-          ));
+      return Expanded(flex: 1, child: Text(''));
     } else {
       return Expanded(
-        flex: 1,
-        child: ListView(
-          children: <Widget>[
-            Wrap(
-              children: <Widget>[
-                Text(
-                  "Seconds",
-                  style: Theme.of(context).textTheme.body2,
-                )
-              ],
-            )
-          ],
-        ),
-      );
+          flex: 1,
+          child: FutureBuilder(
+            future: booksList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return SizedBox();
+              } else {
+                return SizedBox();
+              }
+            },
+          ));
     }
   }
 }
