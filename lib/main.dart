@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (builder) {
           return Container(
             color: Colors.transparent,
+            height: 650.0,
             child: Container(
               decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,

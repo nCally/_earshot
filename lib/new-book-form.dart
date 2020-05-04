@@ -13,29 +13,93 @@ class _NewBookForm extends State<NewBookForm> {
     return Form(
       key: _formKey,
       child: Container(
-        padding: EdgeInsets.all(15.0),
-        child: Form(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 75.0,
-              ),
-              Text('New book'),
-              TextFormField(
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  labelText: 'Title of audio book',
+        padding: EdgeInsets.all(15.5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: 10.0,
+            ),
+            Text(
+              'Create book',
+              style: TextStyle(fontSize: 32.0),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0XFFCDBFBC)),
+                  decoration: InputDecoration(
+                      labelText: 'Title',
+                      labelStyle: TextStyle(
+                          color: const Color(0XFFCDBFBC), fontSize: 16.0),
+                      contentPadding: EdgeInsets.all(5.0),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: const Color(0XFFCDBFBC))),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: const Color(0XFFCDBFBC)))),
                 ),
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Author'),
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Year'),
-              ),
-            ],
-          ),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0XFFCDBFBC)),
+                  decoration: InputDecoration(
+                      labelText: 'Author',
+                      labelStyle: TextStyle(
+                          color: const Color(0XFFCDBFBC), fontSize: 16.0),
+                      contentPadding: EdgeInsets.all(5.0),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: const Color(0XFFCDBFBC))),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: const Color(0XFFCDBFBC)))),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0XFFCDBFBC)),
+                  decoration: InputDecoration(
+                      labelText: 'Year',
+                      labelStyle: TextStyle(
+                          color: const Color(0XFFCDBFBC), fontSize: 16.0),
+                      contentPadding: EdgeInsets.all(5.0),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: const Color(0XFFCDBFBC))),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide:
+                              BorderSide(color: const Color(0XFFCDBFBC)))),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                RaisedButton(
+                  child: Text(
+                    'Save book',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                  ),
+                  onPressed: () {},
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );
