@@ -17,7 +17,7 @@ class DatabaseCreator {
     final createSql = '''
     CREATE TABLE $booksTable 
     (
-      $id INTEGER PRIMARY KEY,
+      $id INTEGER PRIMARY KEY AUTOINCREMENT,
       $title TEXT,
       $author TEXT,
       $year TEXT
@@ -74,24 +74,18 @@ class DBFunctions {
     return books;
   }
 
-  static Future<void> addBook(Books books) async {
+  static Future<int> addBook(Books books) async {
     final sql = '''
     INSERT INTO ${DatabaseCreator.booksTable} 
     (
-      ${DatabaseCreator.id},
       ${DatabaseCreator.title},
       ${DatabaseCreator.author},
       ${DatabaseCreator.year}
     ) 
-    VALUES (?,?,?,?)
+    VALUES (?,?,?)
     ''';
 
-    List<dynamic> params = [books.id, books.title, books.author, books.year];
-    final result = await db.rawInsert(sql, params);
-    if (result == 1) {
-      print('success');
-    } else {
-      print('failed');
-    }
+    List<dynamic> params = [books.title, books.author, books.year];
+    return await db.rawInsert(sql, params);
   }
 }

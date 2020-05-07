@@ -1,5 +1,6 @@
 import 'package:Earshot/db/book-model.dart';
 import 'package:Earshot/db/db.dart';
+import 'package:Earshot/my-library.dart';
 import 'package:Earshot/new-book-form.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _current = true;
-  Future<List<Books>> booksList;
+  List<Books> booksList;
 
   void setCurrent() {
     setState(() {
@@ -45,10 +46,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void getBooks() async {
+    booksList = await DBFunctions.getAllBooks();
+  }
+
   @override
   void initState() {
     super.initState();
-    booksList = DBFunctions.getAllBooks();
+    getBooks();
   }
 
   void _openNewBookModal() {
@@ -79,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Container(
             padding: EdgeInsets.all(20.0),
             child: Padding(
-              padding: EdgeInsets.only(top: 115.0),
+              padding: EdgeInsets.only(top: 85.0),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -88,14 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: <Widget>[
                           GestureDetector(
                             onTap: () async {
-                              /* Books newBook = Books(
-                                  id: 1,
-                                  title:
-                                      'Essentialism: Disciplined pursuit of less',
-                                  author: 'Greg Mckeown',
-                                  year: '2004');
-                              await DBFunctions.addBook(newBook); */
-
                               setState(() {
                                 _current = true;
                               });
@@ -116,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: EdgeInsets.only(left: 20.0),
                               child: GestureDetector(
                                 onTap: () {
+                                  getBooks();
                                   setState(() {
                                     _current = false;
                                   });
@@ -152,19 +150,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _currentChild() {
     if (_current == true) {
-      return Expanded(flex: 1, child: Text(''));
+      return Expanded(
+          flex: 1,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _current = false;
+              });
+            },
+            child: Container(
+              child: Text("concentrate"),
+            ),
+          ));
     } else {
       return Expanded(
           flex: 1,
-          child: FutureBuilder(
-            future: booksList,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return SizedBox();
-              } else {
-                return SizedBox();
-              }
-            },
+          child: GestureDetector(
+            child: Container(
+              child: MyLibrary(),
+            ),
           ));
     }
   }
